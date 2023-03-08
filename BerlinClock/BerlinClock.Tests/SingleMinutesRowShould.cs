@@ -6,6 +6,17 @@ public class SingleMinutesRowShould
 {
     private static object[] _testCases()
     {
+        TimeOnly GenerateTimeOnly(int min) => new(12, min, 0);
+
+        SingleMinuteRow GenerateMinuteRow(int lights) => lights switch
+        {
+            4 => SingleMinuteRow.FourMins,
+            3 => SingleMinuteRow.ThreeMins,
+            2 => SingleMinuteRow.TwoMins,
+            1 => SingleMinuteRow.OneMin,
+            _ => SingleMinuteRow.ZeroMins
+        };
+
         var testCases = new List<object>();
         int min;
         int lights;
@@ -17,23 +28,10 @@ public class SingleMinutesRowShould
         return testCases.ToArray();
     }
 
-    private static TimeOnly GenerateTimeOnly(int min) => new(12, min, 0);
-
-    private static SingleMinuteRow GenerateMinuteRow(int lights) =>
-        lights switch
-        {
-            4 => new SingleMinuteRow(Light.Y, Light.Y, Light.Y, Light.Y),
-            3 => new SingleMinuteRow(Light.Y, Light.Y, Light.Y, Light.O),
-            2 => new SingleMinuteRow(Light.Y, Light.Y, Light.O, Light.O),
-            1 => new SingleMinuteRow(Light.Y, Light.O, Light.O, Light.O),
-            _ => new SingleMinuteRow(Light.O, Light.O, Light.O, Light.O)
-        };
-
     [TestCaseSource(nameof(_testCases))]
     public void ConvertFromTimeToSingleMinuteRow(TimeOnly input, SingleMinuteRow expected)
     {
-        var converter = new BerlinClockConverter();
-        var berlinClockTime = converter.ConvertToBerlinClock(input);
+        var berlinClockTime = BerlinClockConverter.ConvertToBerlinClock(input);
         berlinClockTime.SingleMinutesRow.ShouldBe(expected);
     }
 }

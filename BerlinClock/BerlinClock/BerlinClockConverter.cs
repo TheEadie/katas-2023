@@ -1,8 +1,8 @@
 ﻿namespace BerlinClock;
 
-public class BerlinClockConverter
+public static class BerlinClockConverter
 {
-    public BerlinClockTime ConvertToBerlinClock(TimeOnly time)
+    public static BerlinClockTime ConvertToBerlinClock(TimeOnly time)
     {
         var fiveMins = (time.Minute / 5) switch
         {
@@ -14,11 +14,11 @@ public class BerlinClockConverter
         
         var singleMins = (time.Minute % 5) switch
         {
-            0  => new SingleMinuteRow(Light.O, Light.O, Light.O, Light.O),
-            1 => new SingleMinuteRow(Light.Y, Light.O, Light.O, Light.O),
-            2 => new SingleMinuteRow(Light.Y, Light.Y, Light.O, Light.O),
-            3 => new SingleMinuteRow(Light.Y, Light.Y, Light.Y, Light.O),
-            _ => new SingleMinuteRow(Light.Y, Light.Y, Light.Y, Light.Y)
+            0  => SingleMinuteRow.ZeroMins,
+            1 => SingleMinuteRow.OneMin,
+            2 => SingleMinuteRow.TwoMins,
+            3 => SingleMinuteRow.ThreeMins,
+            _ => SingleMinuteRow.FourMins
         };
 
         return new BerlinClockTime(singleMins, fiveMins);
