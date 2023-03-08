@@ -3,5 +3,6 @@
 public enum Light
 {
     O,
-    Y
+    Y,
+    R
 }
